@@ -1,315 +1,285 @@
-/* ============================================
-   Winter Arc — stylesheet
-   Theme: dark navy / ice-blue, warm ember accent
-   ============================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Core palette */
-  --bg: #0a1420;
-  --bg-2: #0f1e2c;
-  --card: #142639;
-  --card-hover: #182d43;
+  --bg: #16273a;
+  --panel: #1f3349;
+  --panel-hover: #28415a;
   --ice: #bfe3f0;
-  --ice-dim: #7fa3b8;
-  --frost: #eef6f8;
+  --ice-dim: #8fb2c4;
+  --frost: #f2f8fa;
   --ember: #e8a557;
+  --ember-dim: #a97a45;
   --danger: #e2725b;
-  --line: rgba(191, 227, 240, 0.14);
-
-  /* Heat strip intensity scale */
-  --green-0: #142639;
-  --green-1: #1d3a52;
-  --green-2: #2c5c7a;
-  --green-3: #4a8fae;
-  --green-4: #bfe3f0;
+  --line: rgba(191, 227, 240, 0.16);
+  --g0: #1f3349; --g1: #2a4863; --g2: #3d6d8c; --g3: #5c9cbd; --g4: #bfe3f0;
 }
 
 * { box-sizing: border-box; }
-
 body {
   margin: 0;
-  min-height: 100vh;
-  background: radial-gradient(ellipse at top, var(--bg-2), var(--bg) 60%);
+  background: var(--bg);
   color: var(--frost);
   font-family: 'Inter', sans-serif;
-  display: flex;
-  justify-content: center;
-  padding: 48px 18px 70px;
+  padding-bottom: 60px;
 }
 
-.wrap { width: 100%; max-width: 560px; }
-
-h1 {
-  font-family: 'Fraunces', serif;
-  font-weight: 600;
-  font-size: 2.1rem;
-  margin: 0 0 4px;
-  letter-spacing: -0.01em;
-}
-
-.subtitle { color: var(--ice-dim); font-size: 0.9rem; margin: 0; }
-
-/* ---------- Hero card ---------- */
-.hero {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 22px 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.hero-top {
+/* ---------- Navbar ---------- */
+.navbar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 18px;
-}
-
-.day-badge {
-  text-align: center;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 16px;
-}
-
-.day-badge span {
-  display: block;
-  font-family: 'Fraunces', serif;
-  font-size: 1.4rem;
-  color: var(--ice);
-}
-
-.day-badge small {
-  font-size: 0.68rem;
-  color: var(--ice-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.bar-track {
-  height: 6px;
-  background: rgba(191, 227, 240, 0.1);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.bar-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--ice-dim), var(--ice));
-  border-radius: 3px;
-  transition: width 0.5s ease;
-}
-
-.hero-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 0.8rem;
-  color: var(--ice-dim);
-}
-
-/* ---------- Stat cards ---------- */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.stat-card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 16px 10px;
-  text-align: center;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--ice-dim);
-}
-
-.stat-num {
-  font-family: 'Fraunces', serif;
-  font-size: 1.5rem;
-  color: var(--ember);
-}
-
-.stat-label {
-  font-size: 0.72rem;
-  color: var(--ice-dim);
-  margin-top: 2px;
-}
-
-/* ---------- Section headers ---------- */
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 12px;
-}
-
-h2 {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 1.05rem;
-  color: var(--ice);
-  margin: 0;
-}
-
-.section-sub { font-size: 0.78rem; color: var(--ice-dim); }
-
-/* ---------- Heat strip (14-day activity view) ---------- */
-.heat-strip {
-  display: grid;
-  grid-template-columns: repeat(14, 1fr);
-  gap: 5px;
-  margin-bottom: 28px;
-}
-
-.heat-cell {
-  aspect-ratio: 1;
-  border-radius: 4px;
-  background: var(--green-0);
-  border: 1px solid var(--line);
-  transition: transform 0.15s ease;
-}
-
-.heat-cell:hover { transform: scale(1.15); }
-
-/* ---------- Checkpoint list ---------- */
-.checkpoint-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.checkpoint-item {
-  display: flex;
   align-items: center;
-  gap: 14px;
-  background: var(--card);
+  padding: 20px 28px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.nav-logo { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.1rem; }
+.nav-date { font-size: 0.8rem; color: var(--ice-dim); }
+
+/* ---------- Hero banner: solid 3-color block design ---------- */
+.hero-banner {
+  position: relative;
+  max-width: 1040px;
+  margin: 8px auto 28px;
+  padding: 36px 32px;
+  border-radius: 20px;
+  background: #1c2f44;
+  border-top: 4px solid var(--ice);
+  overflow: hidden;
+  box-shadow: 0 10px 34px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  right: -60px;
+  bottom: -80px;
+  width: 220px;
+  height: 220px;
+  background: var(--ember);
+  border-radius: 50%;
+  opacity: 0.14;
+}
+
+.hero-banner::after {
+  content: '';
+  position: absolute;
+  left: -40px;
+  top: -60px;
+  width: 140px;
+  height: 140px;
+  background: var(--panel-hover);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.hero-content, .ring-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ember);
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.hero-banner h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+.hero-banner h1 .dim { color: var(--ice-dim); font-size: 0.5em; }
+.hero-range { color: var(--ice-dim); font-size: 0.85rem; margin: 0; }
+
+.ring-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+.ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: rgba(191,227,240,0.15); stroke-width: 9; }
+.ring-fill {
+  fill: none; stroke: var(--ember); stroke-width: 9; stroke-linecap: round;
+  stroke-dasharray: 326.7; stroke-dashoffset: 326.7;
+  transition: stroke-dashoffset 0.6s ease;
+}
+.ring-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.ring-center span { font-family: 'Fraunces', serif; font-size: 1.3rem; }
+.ring-center small { color: var(--ice-dim); font-size: 0.68rem; margin-top: 2px; }
+
+/* ---------- Dashboard grid ---------- */
+.dashboard {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 14px 16px;
-  cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
-  animation: fadeInUp 0.3s ease backwards;
+  border-radius: 16px;
+  padding: 22px;
 }
 
-.checkpoint-item:hover {
-  background: var(--card-hover);
-  transform: translateX(2px);
-}
+.panel + .panel { margin-top: 20px; }
 
-.checkpoint-item.done { border-color: var(--ice-dim); }
+.panel-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.panel h2 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 1.02rem; color: var(--ice); margin: 0; }
+.panel-sub { font-size: 0.75rem; color: var(--ice-dim); }
+
+/* ---------- Side stats ---------- */
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.mini-stat {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 1px solid var(--line); padding-bottom: 14px;
+}
+.mini-stat:last-child { border-bottom: none; padding-bottom: 0; }
+.mini-num { font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--ember); }
+.mini-label { font-size: 0.78rem; color: var(--ice-dim); }
+
+/* ---------- Calendar grid ---------- */
+.cal-weekdays {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  font-size: 0.65rem; color: var(--ice-dim); text-align: center; margin-bottom: 6px;
+}
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.cal-cell {
+  position: relative;
+  aspect-ratio: 1; border-radius: 5px; background: var(--g0); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+}
+.cal-cell span {
+  font-size: 0.6rem;
+  color: var(--ice-dim);
+}
+.cal-cell.today { border: 1.5px solid var(--ember); }
+.cal-cell.today span { color: var(--frost); font-weight: 600; }
+/* ---------- Checkpoints ---------- */
+.checkpoint-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.checkpoint-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+  padding: 13px 15px; cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.checkpoint-item:hover { transform: translateX(3px); border-color: var(--ice-dim); }
+.checkpoint-item.done { border-color: var(--ember); background: rgba(232,165,87,0.08); }
 
 .checkbox {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1.5px solid var(--ice-dim);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--bg);
-  transition: all 0.2s ease;
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--ice-dim);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; color: var(--bg); transition: all 0.2s ease;
 }
+.checkpoint-item.done .checkbox { background: var(--ember); border-color: var(--ember); }
 
-.checkpoint-item.done .checkbox {
-  background: var(--ice);
-  border-color: var(--ice);
-  transform: scale(1.05);
-}
-
-.name { flex: 1; font-size: 0.95rem; }
-
+.name { flex: 1; font-size: 0.93rem; }
 .time-badge {
-  font-size: 0.72rem;
-  color: var(--ice-dim);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  padding: 3px 8px;
-  flex-shrink: 0;
-  white-space: nowrap;
+  font-size: 0.7rem; color: var(--ice-dim); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 5px; padding: 3px 8px; white-space: nowrap;
 }
-
-.delete-btn {
-  color: var(--ice-dim);
-  opacity: 0.5;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  transition: opacity 0.15s ease, color 0.15s ease;
-}
-
+.delete-btn { color: var(--ice-dim); opacity: 0.5; font-size: 0.8rem; padding: 4px; }
 .delete-btn:hover { opacity: 1; color: var(--danger); }
 
 .empty-state {
-  text-align: center;
-  color: var(--ice-dim);
-  font-size: 0.85rem;
-  padding: 24px;
-  border: 1px dashed var(--line);
-  border-radius: 10px;
+  text-align: center; color: var(--ice-dim); font-size: 0.85rem;
+  padding: 22px; border: 1px dashed var(--line); border-radius: 12px;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ---------- Add checkpoint form ---------- */
+/* ---------- Add form ---------- */
 .add-form { display: flex; gap: 8px; flex-wrap: wrap; }
-
 .add-form input {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--frost);
-  padding: 12px 14px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  transition: border-color 0.15s ease;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+  color: var(--frost); padding: 11px 13px; font-size: 0.88rem;
 }
-
-#newCategoryInput { flex: 1; min-width: 160px; }
-.duration-input { flex: 0 0 170px; font-size: 0.85rem; }
-
-.add-form input::placeholder { color: var(--ice-dim); }
-.add-form input:focus { outline: none; border-color: var(--ice); }
-
+#newCategoryInput { flex: 1; min-width: 150px; }
+.duration-input { flex: 0 0 150px; font-size: 0.82rem; }
+.add-form input:focus { outline: none; border-color: var(--ember); }
 .add-form button {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--ice);
-  color: var(--bg);
-  border: none;
-  border-radius: 8px;
-  padding: 0 20px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  background: var(--ember); color: var(--bg); border: none; border-radius: 8px;
+  padding: 0 20px; font-weight: 600; font-size: 0.85rem; cursor: pointer;
+}
+.add-form button:hover { opacity: 0.88; }
+
+/* ---------- Tablet & mobile ---------- */
+@media (max-width: 760px) {
+  .navbar { padding: 16px 18px; }
+
+  .hero-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 28px 22px;
+    margin: 4px 14px 22px;
+    border-radius: 16px;
+    gap: 18px;
+  }
+
+  .hero-banner h1 { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+    padding: 0 14px;
+    gap: 16px;
+  }
+
+  .panel { padding: 18px; border-radius: 14px; }
+  .panel + .panel { margin-top: 16px; }
+
+  .checkpoint-item { padding: 15px 14px; }
+  .checkbox { width: 26px; height: 26px; }
+
+  .add-form { flex-direction: column; }
+  #newCategoryInput, .duration-input { flex: 1 1 100%; min-width: 0; }
+  .add-form button { padding: 13px 20px; }
+
+  .stack { flex-direction: row; flex-wrap: wrap; gap: 10px; }
+  .mini-stat {
+    flex: 1 1 calc(33% - 8px);
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border-bottom: none;
+    padding: 10px 6px;
+    background: var(--bg);
+    border-radius: 10px;
+  }
 }
 
-.add-form button:hover { opacity: 0.88; }
-.add-form button:active { transform: scale(0.97); }
-
-/* ---------- Mobile ---------- */
+/* ---------- Small phones ---------- */
 @media (max-width: 420px) {
-  body { padding: 32px 14px 50px; }
-  h1 { font-size: 1.7rem; }
-  .heat-strip { grid-template-columns: repeat(7, 1fr); }
+  body { padding-bottom: 40px; }
+  .nav-logo { font-size: 1rem; }
+  .nav-date { font-size: 0.72rem; }
+
+  .ring-wrap { width: 96px; height: 96px; }
+  .ring-center span { font-size: 1.05rem; }
+  .ring-center small { font-size: 0.62rem; }
+
+  .hero-eyebrow { font-size: 0.68rem; }
+  .hero-range { font-size: 0.78rem; }
+
+  .panel h2 { font-size: 0.95rem; }
+  .checkpoint-item { gap: 10px; }
+  .name { font-size: 0.88rem; }
+  .time-badge { font-size: 0.65rem; padding: 2px 6px; }
+
+  .cal-grid { gap: 4px; }
+}
+
+/* ---------- Touch feedback (no hover on mobile) ---------- */
+@media (hover: none) {
+  .checkpoint-item:active { transform: scale(0.98); background: var(--panel-hover); }
+  .add-form button:active { transform: scale(0.96); }
+  .delete-btn { opacity: 0.7; }
 }
