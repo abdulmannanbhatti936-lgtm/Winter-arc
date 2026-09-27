@@ -1,26 +1,12 @@
-/**
- * Winter Arc — daily checkpoint tracker
- * Talks to PHP/MySQL backend under /api
- */
-
 let currentData = { categories: [], logs: {} };
 
 const ARC_START = new Date('2026-09-30T00:00:00');
 const ARC_END = new Date('2027-02-10T00:00:00');
+const RING_CIRCUMFERENCE = 326.7; // 2 * π * 52
 
-/** Returns today's date as YYYY-MM-DD */
 function todayStr() {
   return new Date().toISOString().slice(0, 10);
 }
-
-/** Clones an <svg> from a <template> so it can be reused in multiple items */
-function cloneIcon(templateId) {
-  return document.getElementById(templateId).content.cloneNode(true);
-}
-
-// ---------------------------------------------------------
-// API calls
-// ---------------------------------------------------------
 
 async function fetchData() {
   const res = await fetch('api/get_data.php');
@@ -55,11 +41,6 @@ async function deleteCategory(id) {
   fetchData();
 }
 
-// ---------------------------------------------------------
-// Derived stats
-// ---------------------------------------------------------
-
-/** Counts consecutive days (ending today) with at least one checkpoint done */
 function computeStreak() {
   let streak = 0;
   let d = new Date();
@@ -74,18 +55,18 @@ function computeStreak() {
   return streak;
 }
 
-/** Counts days where every single checkpoint was completed */
 function computePerfectDays() {
   const total = currentData.categories.length;
   if (total === 0) return 0;
-  return Object.values(currentData.logs).filter(day => {
-    return Object.values(day).filter(v => v).length === total;
-  }).length;
+  return Object.values(currentData.logs).filter(day =>
+    Object.values(day).filter(v => v).length === total
+  ).length;
 }
 
-// ---------------------------------------------------------
-// Rendering
-// ---------------------------------------------------------
+function renderNav() {
+  document.getElementById('navDate').textContent =
+    new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+}
 
 function renderHero() {
   const now = new Date();
@@ -95,51 +76,61 @@ function renderHero() {
   const pct = Math.min(100, Math.max(0, (elapsed / totalDays) * 100));
 
   document.getElementById('dayNum').textContent = Math.min(elapsed, totalDays);
-  document.getElementById('daysLeft').textContent = `${remaining} days left`;
+  document.getElementById('daysLeft').textContent = `${remaining} left`;
   document.getElementById('pctDone').textContent = `${Math.round(pct)}%`;
-  document.getElementById('barFill').style.width = `${pct}%`;
+  document.getElementById('ringFill').style.strokeDashoffset = RING_CIRCUMFERENCE * (1 - pct / 100);
 }
 
 function renderStats() {
   const todayLog = currentData.logs[todayStr()] || {};
   const doneToday = Object.values(todayLog).filter(v => v).length;
-
   document.getElementById('streakNum').textContent = computeStreak();
   document.getElementById('todayNum').textContent = `${doneToday}/${currentData.categories.length}`;
   document.getElementById('perfectNum').textContent = computePerfectDays();
 }
 
-function renderHeatStrip() {
-  const strip = document.getElementById('heatStrip');
-  strip.innerHTML = '';
-  const totalCategories = currentData.categories.length || 1;
+/** Renders a real Mon-Sun calendar grid (last 4 weeks) with date numbers, today highlighted */
+function renderCalendar() {
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const total = currentData.categories.length || 1;
 
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
+  const today = new Date();
+  const todayKey = todayStr();
+  const dayOfWeek = (today.getDay() + 6) % 7; // Mon=0 ... Sun=6
+  const start = new Date(today);
+  start.setDate(today.getDate() - dayOfWeek - 21); // 3 full weeks before this week's Monday
+
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
     const key = d.toISOString().slice(0, 10);
     const day = currentData.logs[key] || {};
     const doneCount = Object.values(day).filter(v => v).length;
-    const ratio = doneCount / totalCategories;
+    const ratio = doneCount / total;
 
     const cell = document.createElement('div');
-    cell.className = 'heat-cell';
-    cell.title = `${key}: ${doneCount}/${totalCategories}`;
+    cell.className = 'cal-cell' + (key === todayKey ? ' today' : '');
+    cell.title = `${key}: ${doneCount}/${total}`;
 
-    let colorVar = '--green-0';
-    if (ratio === 1) colorVar = '--green-4';
-    else if (ratio > 0.66) colorVar = '--green-3';
-    else if (ratio > 0.33) colorVar = '--green-2';
-    else if (ratio > 0) colorVar = '--green-1';
+    let colorVar = '--g0';
+    if (d > today) colorVar = '--g0';
+    else if (ratio === 1) colorVar = '--g4';
+    else if (ratio > 0.66) colorVar = '--g3';
+    else if (ratio > 0.33) colorVar = '--g2';
+    else if (ratio > 0) colorVar = '--g1';
     cell.style.background = `var(${colorVar})`;
 
-    strip.appendChild(cell);
+    const numSpan = document.createElement('span');
+    numSpan.textContent = d.getDate();
+    cell.appendChild(numSpan);
+
+    grid.appendChild(cell);
   }
 }
 
 function renderCheckpoints() {
   document.getElementById('dateDisplay').textContent = todayStr();
-
   const todayLog = currentData.logs[todayStr()] || {};
   const list = document.getElementById('checkpointList');
   list.innerHTML = '';
@@ -149,55 +140,30 @@ function renderCheckpoints() {
     return;
   }
 
-  currentData.categories.forEach((cat, index) => {
+  currentData.categories.forEach((cat) => {
     const isDone = !!todayLog[cat.id];
-
     const item = document.createElement('div');
     item.className = 'checkpoint-item' + (isDone ? ' done' : '');
-    item.style.animationDelay = `${index * 0.03}s`;
-
-    const checkbox = document.createElement('div');
-    checkbox.className = 'checkbox';
-    if (isDone) checkbox.appendChild(cloneIcon('icon-check'));
-
-    const name = document.createElement('div');
-    name.className = 'name';
-    name.textContent = cat.name;
-
-    const deleteBtn = document.createElement('div');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.appendChild(cloneIcon('icon-close'));
-
-    item.appendChild(checkbox);
-    item.appendChild(name);
-
-    if (cat.duration) {
-      const badge = document.createElement('div');
-      badge.className = 'time-badge';
-      badge.textContent = cat.duration;
-      item.appendChild(badge);
-    }
-
-    item.appendChild(deleteBtn);
-
-    checkbox.onclick = (e) => { e.stopPropagation(); toggleCheckpoint(cat.id); };
-    name.onclick = () => toggleCheckpoint(cat.id);
-    deleteBtn.onclick = (e) => { e.stopPropagation(); deleteCategory(cat.id); };
-
+    item.innerHTML = `
+      <div class="checkbox">${isDone ? '✓' : ''}</div>
+      <div class="name">${cat.name}</div>
+      ${cat.duration ? `<div class="time-badge">${cat.duration}</div>` : ''}
+      <div class="delete-btn">✕</div>
+    `;
+    item.querySelector('.checkbox').onclick = (e) => { e.stopPropagation(); toggleCheckpoint(cat.id); };
+    item.querySelector('.name').onclick = () => toggleCheckpoint(cat.id);
+    item.querySelector('.delete-btn').onclick = (e) => { e.stopPropagation(); deleteCategory(cat.id); };
     list.appendChild(item);
   });
 }
 
 function render() {
+  renderNav();
   renderHero();
   renderStats();
-  renderHeatStrip();
+  renderCalendar();
   renderCheckpoints();
 }
-
-// ---------------------------------------------------------
-// Event listeners
-// ---------------------------------------------------------
 
 document.getElementById('addForm').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -206,11 +172,20 @@ document.getElementById('addForm').addEventListener('submit', (e) => {
   const name = nameInput.value.trim();
   const duration = durationInput.value.trim();
   if (!name) return;
-
   nameInput.value = '';
   durationInput.value = '';
   addCategory(name, duration);
 });
 
-// Initial load
 fetchData();
+
+// Auto-refresh at midnight so the date/calendar updates without a manual reload
+let lastKnownDate = todayStr();
+setInterval(() => {
+  const nowDate = todayStr();
+  if (nowDate !== lastKnownDate) {
+    lastKnownDate = nowDate;
+    fetchData();
+    renderNav();
+  }
+}, 60000); // check every minute
