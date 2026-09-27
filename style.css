@@ -1,0 +1,315 @@
+/* ============================================
+   Winter Arc — stylesheet
+   Theme: dark navy / ice-blue, warm ember accent
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  /* Core palette */
+  --bg: #0a1420;
+  --bg-2: #0f1e2c;
+  --card: #142639;
+  --card-hover: #182d43;
+  --ice: #bfe3f0;
+  --ice-dim: #7fa3b8;
+  --frost: #eef6f8;
+  --ember: #e8a557;
+  --danger: #e2725b;
+  --line: rgba(191, 227, 240, 0.14);
+
+  /* Heat strip intensity scale */
+  --green-0: #142639;
+  --green-1: #1d3a52;
+  --green-2: #2c5c7a;
+  --green-3: #4a8fae;
+  --green-4: #bfe3f0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, var(--bg-2), var(--bg) 60%);
+  color: var(--frost);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 48px 18px 70px;
+}
+
+.wrap { width: 100%; max-width: 560px; }
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 2.1rem;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.subtitle { color: var(--ice-dim); font-size: 0.9rem; margin: 0; }
+
+/* ---------- Hero card ---------- */
+.hero {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.day-badge {
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.day-badge span {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  color: var(--ice);
+}
+
+.day-badge small {
+  font-size: 0.68rem;
+  color: var(--ice-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.bar-track {
+  height: 6px;
+  background: rgba(191, 227, 240, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--ice-dim), var(--ice));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--ice-dim);
+}
+
+/* ---------- Stat cards ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 10px;
+  text-align: center;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--ice-dim);
+}
+
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  color: var(--ember);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--ice-dim);
+  margin-top: 2px;
+}
+
+/* ---------- Section headers ---------- */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--ice);
+  margin: 0;
+}
+
+.section-sub { font-size: 0.78rem; color: var(--ice-dim); }
+
+/* ---------- Heat strip (14-day activity view) ---------- */
+.heat-strip {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 5px;
+  margin-bottom: 28px;
+}
+
+.heat-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--green-0);
+  border: 1px solid var(--line);
+  transition: transform 0.15s ease;
+}
+
+.heat-cell:hover { transform: scale(1.15); }
+
+/* ---------- Checkpoint list ---------- */
+.checkpoint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.checkpoint-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  animation: fadeInUp 0.3s ease backwards;
+}
+
+.checkpoint-item:hover {
+  background: var(--card-hover);
+  transform: translateX(2px);
+}
+
+.checkpoint-item.done { border-color: var(--ice-dim); }
+
+.checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ice-dim);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  transition: all 0.2s ease;
+}
+
+.checkpoint-item.done .checkbox {
+  background: var(--ice);
+  border-color: var(--ice);
+  transform: scale(1.05);
+}
+
+.name { flex: 1; font-size: 0.95rem; }
+
+.time-badge {
+  font-size: 0.72rem;
+  color: var(--ice-dim);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 3px 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  color: var(--ice-dim);
+  opacity: 0.5;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.delete-btn:hover { opacity: 1; color: var(--danger); }
+
+.empty-state {
+  text-align: center;
+  color: var(--ice-dim);
+  font-size: 0.85rem;
+  padding: 24px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Add checkpoint form ---------- */
+.add-form { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.add-form input {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--frost);
+  padding: 12px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease;
+}
+
+#newCategoryInput { flex: 1; min-width: 160px; }
+.duration-input { flex: 0 0 170px; font-size: 0.85rem; }
+
+.add-form input::placeholder { color: var(--ice-dim); }
+.add-form input:focus { outline: none; border-color: var(--ice); }
+
+.add-form button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--ice);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  padding: 0 20px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.add-form button:hover { opacity: 0.88; }
+.add-form button:active { transform: scale(0.97); }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 420px) {
+  body { padding: 32px 14px 50px; }
+  h1 { font-size: 1.7rem; }
+  .heat-strip { grid-template-columns: repeat(7, 1fr); }
+}
